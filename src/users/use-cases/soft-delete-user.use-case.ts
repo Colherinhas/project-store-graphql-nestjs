@@ -5,14 +5,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UserRepository } from '../users.repository';
-import { UserModel } from '../models/user.model';
+import { UserResponseModel } from '../models/user-response.model';
 
 @Injectable()
 export class SoftDeleteUserUseCase {
   @Inject(UserRepository)
   private readonly $user: UserRepository;
 
-  public async execute(id: string): Promise<UserModel> {
+  public async execute(id: string): Promise<UserResponseModel> {
     try {
       await this.verifyUser(id);
       return this.$user.softDeleteUser(id);
@@ -22,9 +22,15 @@ export class SoftDeleteUserUseCase {
   }
 
   private async verifyUser(id: string): Promise<void> {
+    if (!id) {
+      throw new BadRequestException('Id must not be empty.');
+    }
     const existingUser = await this.$user.findUserById(id);
-    if (existingUser.deletedAt)
+    if (existingUser.deletedAt) {
       throw new BadRequestException('User already deleted.');
-    if (!existingUser) throw new NotFoundException('User not found.');
+    }
+    if (!existingUser) {
+      throw new NotFoundException('User not found.');
+    }
   }
 }
