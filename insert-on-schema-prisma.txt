@@ -7,10 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// model Cart {
+//   id        String        @id @unique @default(uuid())
+//   products  CartProduct[]
+//   ownerId   String        @unique
+//   owner     User          @relation("UserCarts", fields: [ownerId], references: [id])
+//   createdAt DateTime      @default(now())
+//   updatedAt DateTime?     @updatedAt
+// }
+
+// model CartProduct {
+//   id        String  @id @unique @default(uuid())
+//   cartId    String
+//   cart      Cart    @relation(fields: [cartId], references: [id])
+//   productId String
+//   product   Product @relation(fields: [productId], references: [id])
+// }
+
 model Product {
   id           String           @id @unique @default(uuid())
   type         ProductsTypeEnum
   name         String
+  // carts        CartProduct[]
   availability Boolean          @default(true)
 }
 
@@ -20,6 +38,7 @@ model User {
   email     String
   status    UserStatusEnum @default(ACTIVE)
   password  String
+  // carts     Cart[]         @relation("UserCarts")
   createdAt DateTime       @default(now())
   updatedAt DateTime?      @updatedAt
   deletedAt DateTime?
@@ -37,3 +56,4 @@ enum UserStatusEnum {
   INACTIVE
   BANNED
 }
+
