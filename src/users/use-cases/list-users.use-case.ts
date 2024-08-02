@@ -1,15 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../users.repository';
-import { FindUserFilterDto } from '../dtos/find-user-filters.dto';
+import { ListUsersFilterDto } from '../dtos/list-users-filters.dto';
 import { UserResponseModel } from '../models/user-response.model';
 
 @Injectable()
-export class FindUserUseCase {
+export class ListUsersUseCase {
   @Inject(UserRepository)
   private readonly $user: UserRepository;
 
   public async execute(
-    filters?: FindUserFilterDto,
+    filters?: ListUsersFilterDto,
   ): Promise<UserResponseModel[]> {
     try {
       return this.$user.findUsers(filters);

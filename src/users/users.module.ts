@@ -2,7 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { SharedModule } from 'src/shared/shared.module';
 import { UserRepository } from './users.repository';
 import { UserResolver } from './users.resolver';
-import { FindUserUseCase } from './use-cases/find-users.use-case';
+import { ListUsersUseCase } from './use-cases/list-users.use-case';
 import { CreateUserUseCase } from './use-cases/create-user.use-case';
 import { UpdateUserUseCase } from './use-cases/update-user.use-case';
 import { FindUserByIdUseCase } from './use-cases/find-user-by-id.use-case';
@@ -16,7 +16,7 @@ import { SoftDeleteUserUseCase } from './use-cases/soft-delete-user.use-case';
     UserResolver,
 
     FindUserByIdUseCase,
-    FindUserUseCase,
+    ListUsersUseCase,
     CreateUserUseCase,
     UpdateUserUseCase,
     SoftDeleteUserUseCase,

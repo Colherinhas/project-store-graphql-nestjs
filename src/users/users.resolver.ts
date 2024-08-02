@@ -1,10 +1,10 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { FindUserFilterDto } from './dtos/find-user-filters.dto';
+import { ListUsersFilterDto } from './dtos/list-users-filters.dto';
 import { CreateUserUseCase } from './use-cases/create-user.use-case';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { FindUserUseCase } from './use-cases/find-users.use-case';
+import { ListUsersUseCase } from './use-cases/list-users.use-case';
 import { UpdateUserUseCase } from './use-cases/update-user.use-case';
 import { FindUserByIdUseCase } from './use-cases/find-user-by-id.use-case';
 import { SoftDeleteUserUseCase } from './use-cases/soft-delete-user.use-case';
@@ -15,8 +15,8 @@ import { JwtGuard } from 'src/shared/guards/jwt-auth.guard';
 export class UserResolver {
   @Inject(FindUserByIdUseCase)
   private readonly $findUser: FindUserByIdUseCase;
-  @Inject(FindUserUseCase)
-  private readonly $findMany: FindUserUseCase;
+  @Inject(ListUsersUseCase)
+  private readonly $findMany: ListUsersUseCase;
   @Inject(CreateUserUseCase)
   private readonly $create: CreateUserUseCase;
   @Inject(UpdateUserUseCase)
@@ -38,8 +38,8 @@ export class UserResolver {
   @Query(() => [UserResponseModel], { name: 'users' })
   public async findUsers(
     @Context() context: any,
-    @Args('filters', { type: () => FindUserFilterDto, nullable: true })
-    filters?: FindUserFilterDto,
+    @Args('filters', { type: () => ListUsersFilterDto, nullable: true })
+    filters?: ListUsersFilterDto,
   ): Promise<UserResponseModel[]> {
     return this.$findMany.execute(filters);
   }
