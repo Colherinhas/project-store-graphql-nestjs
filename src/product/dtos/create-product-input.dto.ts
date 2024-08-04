@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, Float, InputType } from '@nestjs/graphql';
 import { ProductsTypeEnum } from '@prisma/client';
 import { IsEnum, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 
@@ -9,12 +9,16 @@ export class CreateProductDto {
   @MinLength(1)
   name: string;
 
-  @Field(() => ProductsTypeEnum)
+  @Field(() => [ProductsTypeEnum])
   @IsNotEmpty()
-  @IsEnum(ProductsTypeEnum)
-  type: ProductsTypeEnum;
+  categories: ProductsTypeEnum[];
 
-  @Field(() => Boolean)
-  @IsOptional()
-  availability?: boolean;
+  @Field(() => Number)
+  @IsNotEmpty()
+  stock: number;
+
+  @Field(() => Float)
+  @IsNotEmpty()
+  @MinLength(0)
+  price: number;
 }

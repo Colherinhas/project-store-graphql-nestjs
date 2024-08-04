@@ -1,6 +1,6 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 import { ProductsTypeEnum } from '@prisma/client';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator';
 
 @InputType()
 export class ListProductsDto {
@@ -8,16 +8,18 @@ export class ListProductsDto {
   @IsOptional()
   id?: string;
 
-  @Field(() => ProductsTypeEnum, { nullable: true })
-  @IsEnum(ProductsTypeEnum)
-  @IsOptional()
-  type?: ProductsTypeEnum;
+  @Field(() => [ProductsTypeEnum], { nullable: true })
+  categories?: ProductsTypeEnum;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   name?: string;
 
-  @Field(() => Boolean, { nullable: true })
+  @Field(() => Int, { nullable: true })
   @IsOptional()
-  availability?: boolean;
+  stock?: number;
+
+  @Field(() => Number, { nullable: true })
+  @IsOptional()
+  price?: number;
 }

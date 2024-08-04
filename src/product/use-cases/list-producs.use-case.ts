@@ -8,7 +8,7 @@ export class ListProductsUseCase {
   @Inject(ProductRepository)
   private readonly $products: ProductRepository;
 
-  public async execute(filters: ListProductsDto): Promise<ProductModel[]> {
+  public async execute(filters): Promise<ProductModel[]> {
     try {
       return this.$products.listProducts(filters);
     } catch (error) {

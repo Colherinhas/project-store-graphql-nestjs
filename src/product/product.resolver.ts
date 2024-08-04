@@ -6,13 +6,29 @@ import { CreateProductDto } from './dtos/create-product-input.dto';
 import { JwtGuard } from 'src/shared/guards/jwt-auth.guard';
 import { ListProductsUseCase } from './use-cases/list-producs.use-case';
 import { ListProductsDto } from './dtos/list-products-input.dto';
+import { ProductRepository } from './product.repository';
+import { DeleteProductUseCase } from './use-cases/delete-product.use-case';
+import { FindProductByIdUseCase } from './use-cases/find-product-by.use-case';
 
 @Resolver()
 export class ProductResolver {
-  @Inject(CreateProductUseCase)
-  private readonly $create: CreateProductUseCase;
+  @Inject(FindProductByIdUseCase)
+  private readonly $find: FindProductByIdUseCase;
   @Inject(ListProductsUseCase)
   private readonly $list: ListProductsUseCase;
+  @Inject(CreateProductUseCase)
+  private readonly $create: CreateProductUseCase;
+  @Inject(DeleteProductUseCase)
+  private readonly $delete: DeleteProductUseCase;
+
+  @UseGuards(JwtGuard)
+  @Query(() => ProductModel, { name: 'findProduct' })
+  public async findProductById(
+    @Args('id', { type: () => String })
+    id: string,
+  ): Promise<ProductModel> {
+    return this.$find.execute(id);
+  }
 
   @UseGuards(JwtGuard)
   @Query(() => [ProductModel], { name: 'listProducts' })
@@ -32,5 +48,16 @@ export class ProductResolver {
     data: CreateProductDto,
   ): Promise<ProductModel> {
     return this.$create.execute(data);
+  }
+
+  @UseGuards(JwtGuard)
+  @Mutation(() => ProductModel, { name: 'deleteProduct' })
+  public async deleteProduct(
+    @Args('id', {
+      type: () => String,
+    })
+    id: string,
+  ): Promise<ProductModel> {
+    return this.$delete.execute(id);
   }
 }

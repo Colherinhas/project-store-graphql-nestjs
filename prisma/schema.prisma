@@ -8,10 +8,11 @@ datasource db {
 }
 
 model Product {
-  id           String           @id @unique @default(uuid())
-  type         ProductsTypeEnum
-  name         String
-  availability Boolean          @default(true)
+  id         String             @id @unique @default(uuid())
+  categories ProductsTypeEnum[]
+  name       String
+  stock      Int
+  price      Float
 }
 
 model User {

@@ -1,8 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DbConnection } from 'src/shared/db/db.connection';
-import { ProductModel } from './models/product.model';
-import { CreateProductDto } from './dtos/create-product-input.dto';
-import { Prisma, Product } from '@prisma/client';
+import { Prisma, Product, ProductsTypeEnum } from '@prisma/client';
 import { ListProductsDto } from './dtos/list-products-input.dto';
 
 @Injectable()
@@ -10,15 +8,21 @@ export class ProductRepository {
   @Inject(DbConnection)
   private readonly $db: DbConnection;
 
-  //   public async findProductById(): Promise<> {
-  //     return;
-  //   }
+  public async findProductById(id: string): Promise<Product> {
+    return this.$db.product.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
 
   public async listProducts(
     filters: Partial<Prisma.ProductWhereInput>,
-  ): Promise<ProductModel[]> {
+  ): Promise<Product[]> {
     return this.$db.product.findMany({
-      where: { ...filters },
+      where: {
+        ...filters,
+      },
     });
   }
 
@@ -30,11 +34,22 @@ export class ProductRepository {
     });
   }
 
-  //   public async updateProduct(): Promise<> {
-  //     return;
-  //   }
+  public async updateProduct(
+    data: Partial<Prisma.ProductUncheckedUpdateInput>,
+  ): Promise<Product> {
+    return this.$db.product.update({
+      where: {
+        id: data.id as string,
+      },
+      data: { ...data },
+    });
+  }
 
-  //   public async deleteProduct(): Promise<> {
-  //     return;
-  //   }
+  public async deleteProduct(id: string): Promise<Product> {
+    return this.$db.product.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }
