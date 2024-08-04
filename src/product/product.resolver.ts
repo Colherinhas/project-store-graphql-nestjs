@@ -6,9 +6,10 @@ import { CreateProductDto } from './dtos/create-product-input.dto';
 import { JwtGuard } from 'src/shared/guards/jwt-auth.guard';
 import { ListProductsUseCase } from './use-cases/list-producs.use-case';
 import { ListProductsDto } from './dtos/list-products-input.dto';
-import { ProductRepository } from './product.repository';
 import { DeleteProductUseCase } from './use-cases/delete-product.use-case';
 import { FindProductByIdUseCase } from './use-cases/find-product-by.use-case';
+import { UpdateProductDto } from './dtos/update-product-input.dto';
+import { UpdateProductUseCase } from './use-cases/update-product.use-case';
 
 @Resolver()
 export class ProductResolver {
@@ -18,6 +19,8 @@ export class ProductResolver {
   private readonly $list: ListProductsUseCase;
   @Inject(CreateProductUseCase)
   private readonly $create: CreateProductUseCase;
+  @Inject(UpdateProductUseCase)
+  private readonly $update: UpdateProductUseCase;
   @Inject(DeleteProductUseCase)
   private readonly $delete: DeleteProductUseCase;
 
@@ -48,6 +51,16 @@ export class ProductResolver {
     data: CreateProductDto,
   ): Promise<ProductModel> {
     return this.$create.execute(data);
+  }
+  @UseGuards(JwtGuard)
+  @Mutation(() => ProductModel, { name: 'updateProduct' })
+  public async updateProduct(
+    @Args('data', {
+      type: () => UpdateProductDto,
+    })
+    data: UpdateProductDto,
+  ): Promise<ProductModel> {
+    return this.$update.execute(data);
   }
 
   @UseGuards(JwtGuard)

@@ -1,16 +1,17 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ProductRepository } from '../product.repository';
+import { UpdateProductDto } from '../dtos/update-product-input.dto';
 import { ProductModel } from '../models/product.model';
 
 @Injectable()
-export class DeleteProductUseCase {
+export class UpdateProductUseCase {
   @Inject(ProductRepository)
   private readonly $product: ProductRepository;
 
-  public async execute(id: string): Promise<ProductModel> {
+  public async execute(data: UpdateProductDto): Promise<ProductModel> {
     try {
-      await this.validateProduct(id);
-      return this.$product.deleteProduct(id);
+      await this.validateProduct(data.id);
+      return this.$product.updateProduct(data);
     } catch (error) {
       throw Error(error.message);
     }
