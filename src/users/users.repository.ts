@@ -36,7 +36,14 @@ export class UserRepository {
     data: Prisma.UserUncheckedCreateInput,
   ): Promise<User> {
     return this.$db.user.create({
-      data: { ...data },
+      data: {
+        ...data,
+        cart: {
+          create: {
+            products: {},
+          },
+        },
+      },
     });
   }
 
