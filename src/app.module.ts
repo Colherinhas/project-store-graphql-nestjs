@@ -8,22 +8,29 @@ import {
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { ProductModule } from './product/product.module';
+import { CartsModule } from './cart/cart.module';
 
 @Module({
   imports: [
+    forwardRef(() => SharedModule),
+
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: {
         federation: 2,
       },
     }),
+
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
     }),
-    forwardRef(() => SharedModule),
-    UserModule,
+
     AuthModule,
+    CartsModule,
+    ProductModule,
+    UserModule,
   ],
   providers: [],
 })
