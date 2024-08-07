@@ -7,6 +7,19 @@ export class UserRepository {
   @Inject(DbConnection)
   private $db: DbConnection;
 
+  public async findUserById(id: string): Promise<User> {
+    return this.$db.user.findUnique({
+      where: { id },
+    });
+  }
+
+  public async findUserByFilter(
+    filters: Partial<Prisma.UserWhereInput>,
+  ): Promise<User> {
+    return this.$db.user.findFirst({
+      where: { ...filters },
+    });
+  }
   public async findUsers(
     filters?: Partial<Prisma.UserWhereInput>,
   ): Promise<User[]> {
@@ -14,6 +27,7 @@ export class UserRepository {
     return this.$db.user.findMany({
       where: {
         ...userFilters,
+        deletedAt: null,
       },
     });
   }
@@ -22,7 +36,14 @@ export class UserRepository {
     data: Prisma.UserUncheckedCreateInput,
   ): Promise<User> {
     return this.$db.user.create({
-      data: { ...data },
+      data: {
+        ...data,
+        cart: {
+          create: {
+            products: {},
+          },
+        },
+      },
     });
   }
 
@@ -31,7 +52,14 @@ export class UserRepository {
   ): Promise<User> {
     return this.$db.user.update({
       where: { id: data.id as string },
-      data: { ...data },
+      data: { ...data, deletedAt: null },
+    });
+  }
+
+  public async softDeleteUser(id: string): Promise<User> {
+    return this.$db.user.update({
+      where: { id },
+      data: { deletedAt: new Date(), updatedAt: new Date() },
     });
   }
 }
