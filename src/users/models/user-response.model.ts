@@ -40,21 +40,27 @@ export class UserResponseModel {
 @ObjectType()
 class UserCartResponseModel {
   @Field(() => ID)
-  id: string;
+  id?: string;
 
-  @Field(() => ProductModel)
-  products: Product[];
+  @Field(() => ProductModel, {
+    nullable: true,
+  })
+  products?: Product[];
 
-  @Field(() => UserResponseModel)
-  owner: UserResponseModel;
+  @Field(() => UserResponseModel, {
+    nullable: true,
+  })
+  owner?: UserResponseModel;
 
-  @Field(() => Date)
-  createdAt: Date;
+  @Field(() => Date, {
+    nullable: true,
+  })
+  createdAt?: Date;
 
   @Field(() => Date, {
     nullable: true,
     description:
       'This field will only be available after the first record update',
   })
-  updatedAt: Date | null;
+  updatedAt?: Date | null;
 }

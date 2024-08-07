@@ -10,6 +10,9 @@ export class UserRepository {
   public async findUserById(id: string): Promise<User> {
     return this.$db.user.findUnique({
       where: { id },
+      include: {
+        cart: true,
+      },
     });
   }
 

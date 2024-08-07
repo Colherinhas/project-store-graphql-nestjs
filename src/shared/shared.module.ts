@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { DbConnection } from './db/db.connection';
 import { registerEnumType } from '@nestjs/graphql';
-import { ProductsTypeEnum, UserStatusEnum } from '@prisma/client';
+import { UserStatusEnum } from '@prisma/client';
 import { HashHelper } from './helpers/hash.helper';
 import { JwtHelper } from './helpers/jwt.helper';
 import { JwtGuard } from './guards/jwt-auth.guard';
@@ -28,16 +28,6 @@ export class SharedModule {
         ACTIVE: { description: 'Active User' },
         INACTIVE: { description: 'Inactive User' },
         BANNED: { description: 'Banned User' },
-      },
-    });
-    registerEnumType(ProductsTypeEnum, {
-      name: 'ProductsTypeEnum',
-      description: 'Product types Available',
-      valuesMap: {
-        CLOTHING: { description: 'Clothing product type' },
-        ELECTRONICS: { description: 'Electronic product type' },
-        EXERCISING: { description: 'Exercising product type' },
-        TOYS: { description: 'Toy product type' },
       },
     });
   }

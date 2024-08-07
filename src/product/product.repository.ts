@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DbConnection } from 'src/shared/db/db.connection';
-import { Prisma, Product, ProductsTypeEnum } from '@prisma/client';
-import { ListProductsDto } from './dtos/list-products-input.dto';
+import { Prisma, Product } from '@prisma/client';
 
 @Injectable()
 export class ProductRepository {
